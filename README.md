@@ -1,5 +1,5 @@
 # PowerPuppet
-Powershellをサービスとして常駐させるためのラッパーC#アプリ
+Powershellスクリプトをサービスとして常駐させるためのC#ラッパー 
 
 ###使用方法
 コンパイルしてできた、PowerPuppet.exeを別名に変え、  
@@ -24,7 +24,7 @@ Example: InstallUtil.exe nginx_service.exe
 
 等としてください。  
 
-（InstallUtilはC:\Windows\Microsoft.NET\Framework～\各種バージョン\  
+（InstallUtil.exeはC:\Windows\Microsoft.NET\Framework～\各種バージョン\  
 　配下にあります。）
 
 ###動作概略
@@ -33,6 +33,7 @@ Example: InstallUtil.exe nginx_service.exe
 　メソッドが逐次呼び出されます。  
 　もし、C#サービスの仕様から不足しているプロパティ・メソッドがある場合は  
 　Service1.csに記述があるので改修してください。  
+　（System.ServiceProcess.ServiceBaseのプロパティ・メソッドです）  
 
 ・プロパティ  
 ServiceName  
@@ -56,7 +57,7 @@ OnShutdown
 Dispose  
 
 2.インストーラ動作時  
-ps1中のgetServiceProcessInstallerが呼び出され、  
+ps1中のgetServiceProcessInstallerメソッドが呼び出され、  
 
 System.ServiceProcess.ServiceProcessInstaller  
 System.ServiceProcess.ServiceInstaller  
