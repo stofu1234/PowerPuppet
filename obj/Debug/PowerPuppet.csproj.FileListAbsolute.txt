@@ -1,0 +1,8 @@
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\bin\Debug\PowerPuppet.exe.config
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\bin\Debug\PowerPuppet.exe
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\bin\Debug\PowerPuppet.pdb
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\obj\Debug\PowerPuppet.csprojResolveAssemblyReference.cache
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\obj\Debug\PowerPuppet.ProjectInstaller.resources
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\obj\Debug\PowerPuppet.csproj.GenerateResource.Cache
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\obj\Debug\PowerPuppet.exe
+e:\Users\naomasa\Google ドライブ\PC_SHARE\Projects\PowerPuppet\PowerPuppet\obj\Debug\PowerPuppet.pdb
