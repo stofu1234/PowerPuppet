@@ -1,0 +1,2 @@
+# PowerPuppet
+Powershellをサービスとして常駐させるためのラッパーC#アプリ
