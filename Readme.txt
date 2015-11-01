@@ -2,7 +2,7 @@
 PowerPuppet
 
 ■概略
-Powershellをサービスとして常駐させるためのラッパーC#アプリです。
+Powershellスクリプトをサービスとして常駐させるためのC#ラッパー
 
 ■使用方法
 コンパイルしてできた、PowerPuppet.exeを別名に変え、
