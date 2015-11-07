@@ -12,9 +12,9 @@ function getServiceProcessInstaller{
    $serviceProcessInstaller.Account = $localSystem
 
    $serviceInstaller.StartType   = $automatic
-   $serviceInstaller.ServiceName = "nginx"
-   $serviceInstaller.DisplayName = "Nginx"
-   $serviceInstaller.Description = "nginxだよ～ん"
+   $serviceInstaller.ServiceName = "nodejs"
+   $serviceInstaller.DisplayName = "node.js"
+   $serviceInstaller.Description = "node.jsだよ～ん"
    
    # return
    $serviceProcessInstaller
@@ -26,30 +26,28 @@ function getServiceProcessInstaller{
 function OnStart($args){
    "$(timeStamp) Script is starting..." >>$logPath
    cd $scriptPath
-   Start-Process -FilePath $nginxPath 2>&1 >>$logPath
-   # 子プロセス監視開始
+   #$parentProcess = Start-Process -FilePath $nodePath -ArgumentList $targetJs -PassThru
+   $script:parentProcess = Start-Process -FilePath $nodePath -ArgumentList $targetJs -PassThru
+   
+   $parentProcess.id > $pidPath
+   
+   # プロセス監視開始
    $start = Register-ObjectEvent -InputObject      $timer `
                                  -SourceIdentifier $sourceIdentifier `
                                  -EventName        $eventName `
                                  -Action           $watcher.GetNewClosure()
    $timer.start()
 
-   # nginxの親プロセスIDを取得、pidファイル出力待機
-   while($true){
-      if(Test-Path $pidPath){
-         $parentProcessID    = cat $pidPath
-         break
-      } else {
-         Start-Sleep -Milliseconds $pidWaitTime
-      }
-   }
-   "$(timeStamp) parent process pid:"+$parentProcessID >>$logPath
+   "$(timeStamp) parent process pid:"+$($parentProcess.id) >>$logPath
 
-   # nginxの子プロセスを取得
+   Start-Sleep $childProcessWaitTime
+   
+   # node.jsの子プロセスを取得
    $parentProcessQuery = "SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {0}"
-   $script:childProcesses = Get-Process | ? {$_.Name -eq $appProcessName} | ? {$_.id -ne $parentProcessID } | ? {
+   $script:childProcesses = Get-Process | ? {$_.Name -eq $appProcessName} | ? {$_.id -ne $parentProcess.id } | ? {
       $ppid = (Get-WmiObject -query ($parentProcessQuery -F $_.id)).ParentProcessId 2>$null
-      $parentProcessID -eq $ppid
+      "$(timeStamp) ppid:"+$ppid >>$logPath
+      $parentProcess.id -eq $ppid
    }
    "$(timeStamp) child processes:"+($script:childProcesses | % {$_.id}) >>$logPath
    "$(timeStamp) Done." >>$logPath
@@ -58,27 +56,20 @@ function OnStart($args){
 function OnStop(){
    "$(timeStamp) Script is stopping..." >>$logPath
    cd $scriptPath
-   Start-Process -FilePath $nginxPath -ArgumentList @("-s","quit") 2>&1 >>$logPath
-
-   # 子プロセス監視停止
-   Unregister-Event -SourceIdentifier $sourceIdentifier
+   Stop-Process -InputObject $parentProcess
    
-   # nginx pid 削除待ち wait処理
-   Start-Sleep -Milliseconds $pidWaitTime
-   while($true){
-      if(Test-Path $pidPath){
-         Start-Sleep -Milliseconds $pidWaitTime
-      } else {
-         break
-      }
-   }
-   # nginxの子プロセスをキル
+   Remove-Item -Path $pidPath
+   
+   # プロセス監視停止
+   Unregister-Event -SourceIdentifier $sourceIdentifier
+   "$(timeStamp) childProcess:"+$childProcesses >>$logPath
+   # node.jsの子プロセスをキル
      Get-Process -InputObject $childProcesses -ea SilentlyContinue `
-   | ? {! $_.WaitForExit($waitForExitTime)} `
    | % { 
          "$(timeStamp) killing process:"+$_.id+" HasExited:"+$_.HasExited >>$logPath
          Stop-Process -InputObject $_ -Force
        }
+
    "$(timeStamp) Done." >>$logPath
 }
 
@@ -91,10 +82,9 @@ function timeStamp{
 $watcher = {
    #Write-Host "$(timeStamp) watching..."
    "$(timeStamp) watching..." >>$logPath
-   $pid = cat $pidPath
-   $parentProcess = Get-Process -Id $pid -ea SilentlyContinue
+   $parentProcess = Get-Process -InputObject $parentProcess -ea SilentlyContinue
    if(! $?){
-      "$(timeStamp) Process[$pid] not found. Rebooting..." >>$logPath
+      "$(timeStamp) Process[$($parentProcess.id)] not found. Rebooting..." >>$logPath
       OnStop
       OnStart $null
       "$(timeStamp) Done." >>$logPath
@@ -103,27 +93,28 @@ $watcher = {
 }
 
 # サービス設定情報
-$ServiceName = "nginx"
+$ServiceName = "nodejs"
 $CanStop     = $true
 
 # 定数
 $scriptPath = Split-Path $script:myInvocation.MyCommand.path -parent
-$nginxPath  = Join-Path  $scriptPath "nginx.exe"
-$logPath    = Join-Path  $scriptPath "nginx_service.log"
-$pidPath    = Join-Path  $scriptPath "logs\nginx.pid"
+#$scriptPath = "E:\Users\naomasa\Documents\node"
+$nodePath   = "node.exe"
+$targetJs   = Join-Path  $scriptPath "http.js"
+$logPath    = Join-Path  $scriptPath "node_service.log"
+$pidPath    = Join-Path  $scriptPath "node.pid"
 
-$appProcessName     = "nginx"
+$appProcessName     = "node"
 $childProcesses     = $null
 
-$pidWaitTime     = 500
-$waitForExitTime = 1000
-
-$sourceIdentifier = "TimerElapsed"
-$eventName        = "Elapsed"
+$childProcessWaitTime  = 1
 
 # プロセス監視用タイマー
 $timer = New-Object System.Timers.Timer
 $timer.Interval  = 10e3      #プロセス監視間隔 10秒
+
+$sourceIdentifier = "TimerElapsed"
+$eventName        = "Elapsed"
 
 
 "Usage: InstallUtil.exe [<service>.exe]"
