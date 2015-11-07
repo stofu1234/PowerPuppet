@@ -43,7 +43,7 @@ nginx_service.ps1
 例）
 InstallUtil.exe nginx_service.exe
 
-（InstallUtil.exeは<windir>\Microsoft.NET\Framework[|64]\v*.*.*****にあります）
+（InstallUtil.exeは\<windir\>\Microsoft.NET\Framework[|64]\v\*.\*.*****にあります）
 
 samplecfgフォルダに以下のサンプルps1があります
 * nginx_service.ps1
