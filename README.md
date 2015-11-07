@@ -26,24 +26,28 @@ LinuxのオープンソースアプリがWindowsに移植された場合、
 * その他あなたの考えるWindowsサービスの使い方  
 
 ###使用方法
-コンパイルしてできた、PowerPuppet.exeを別名に変え、  
-そのexeと同名で拡張子がps1のPowershellスクリプトを記述します。  
+1.プロジェクトをコンパイルし、PowerPuppet.exeを作成します
 
-サンプルとして、  
-nginx_service.exe  
-nginx_service.ps1  
-とした場合のps1ファイルを  
+2.PowerPuppet.exeを任意の名前にリネームします
 
-samplecfgフォルダに配置しました。  
+例）
+PowerPuppet.exe → nginx_service.exe
 
-サービスインストールする場合は  
+3.同名の.ps1ファイルを用意します
 
-Example: InstallUtil.exe nginx_service.exe  
+例）
+nginx_service.ps1
 
-等としてください。  
+4.InstallUtil.exeでリネームしたexeを登録します
 
-（InstallUtil.exeはC:\Windows\Microsoft.NET\Framework～\各種バージョン\  
-　配下にあります。）
+例）
+InstallUtil.exe nginx_service.exe
+
+（InstallUtil.exeは<windir>\Microsoft.NET\Framework[|64]\v*.*.*****にあります）
+
+samplecfgフォルダに以下のサンプルps1があります
+* nginx_service.ps1
+* node_service.ps1
 
 ###動作概略
 1.常駐サービス動作時は以下のプロパティ・メソッドがps1上にある場合、  
