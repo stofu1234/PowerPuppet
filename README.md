@@ -45,9 +45,9 @@ InstallUtil.exe nginx_service.exe
 
 （InstallUtil.exeは\<windir\>\Microsoft.NET\Framework[|64]\v\*.\*.*****にあります）
 
-samplecfgフォルダに以下のサンプルps1があります
-* nginx_service.ps1
-* node_service.ps1
+gituhub上のsamplecfgフォルダに以下のサンプルps1があります
+* nginx_service.ps1  →　Nginx用サンプルps1
+* node_service.ps1   →　Node.js用サンプルps1
 
 ###動作概略
 1.常駐サービス動作時は以下のプロパティ・メソッドがps1上にある場合、  
