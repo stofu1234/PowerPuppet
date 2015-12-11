@@ -26,7 +26,7 @@ LinuxのオープンソースアプリがWindowsに移植された場合、
 * その他あなたの考えるWindowsサービスの使い方  
 
 ###使用方法
-1.プロジェクトをコンパイルし、PowerPuppet.exeを作成します
+1.プロジェクトをビルドし、PowerPuppet.exeを作成します
 
 2.PowerPuppet.exeを任意の名前にリネームします
 
