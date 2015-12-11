@@ -93,3 +93,7 @@ Powershellでのイベントの変え方は、下記のURLを参考にしてく�
 
 [PowerShell]VisualBaiscとPowerShellのイベント処理の比較  
 http://d.hatena.ne.jp/newpops/20070120/p1  
+
+###残課題
+1.Powershell2.0、.NetFramework4.5に依存しているので
+  Pashみたいに複数環境に対するビルドができるようにしたいです。
