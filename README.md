@@ -28,6 +28,10 @@ LinuxのオープンソースアプリがWindowsに移植された場合、
 ###使用方法
 1.プロジェクトをビルドし、PowerPuppet.exeを作成します
 
+MSBuild.exe /property:Configuration=Release PowerPuppet.csproj
+
+（MSBuild.exeは\<windir\>\Microsoft.NET\Framework[|64]\v\*.\*.*****にあります）
+
 2.PowerPuppet.exeを任意の名前にリネームします
 
 例）
